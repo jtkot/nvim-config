@@ -1,0 +1,22 @@
+return {
+	autoindent = false,
+	clipboard = 'unnamed',
+	cursorline = true,
+	hlsearch = false,
+	ignorecase = true,
+	incsearch = true,
+	modeline = true,
+	mouse = "",
+	number = true,
+	numberwidth = 6,
+	relativenumber = true,
+	shiftwidth = 4 ,
+	-- showmode = false,
+	signcolumn = 'yes',
+	smartcase = true,
+	smartindent = true,
+	smarttab = true,
+	tabstop = 4,
+	termguicolors = true,
+	wrap = false
+}

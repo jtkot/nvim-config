@@ -10,7 +10,7 @@ local _, current_dir = lib.filesystem.self_path()
 
 local _, opts = lib.module.run(current_dir .. '/config/opts.lua') 
 for k, v in pairs(opts) do
-	vim.opt[k] = v
+	vim.o[k] = v
 end
 
 local _, cmds = lib.module.run(current_dir .. '/config/autostart.lua') 

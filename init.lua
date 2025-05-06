@@ -1,5 +1,6 @@
 local lib = require('lib')
 local pm = require('plugin-manager')
+vim.g.mapleader = ' '
 
 local success, result = pcall(pm.setup_plugin_manager)
 if (not success) then

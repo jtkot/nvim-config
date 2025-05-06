@@ -7,6 +7,7 @@ return {
 			lspconfig.clangd.setup({})
 			lspconfig.jdtls.setup({})
 			lspconfig.ts_ls.setup({})
+			lspconfig.pyright.setup({})
 		end,
 	}
 }

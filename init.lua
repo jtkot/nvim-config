@@ -23,3 +23,8 @@ local _, keymaps = lib.module.run(current_dir .. '/config/keymaps.lua')
 for _, v in ipairs(keymaps) do
 	vim.keymap.set(v.modes, v.keys, v.action)
 end
+
+local _, commands = lib.module.run(current_dir .. '/config/commands.lua')
+for name, v in pairs(commands) do
+	vim.api.nvim_create_user_command(name, v.cmd, v.opts)
+end

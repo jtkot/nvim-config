@@ -26,7 +26,7 @@ function module.plug(plugin)
 		end
 	end
 
-	local module_name = plugin.module_name or filesystem.path(plugin_path .. '/lua/*')():match('[^/.]*$')
+	local module_name = plugin.module_name or filesystem.find_with_glob(plugin_path .. '/lua/*')():match('[^/.]*$')
 	local hooks = plugin.hooks
 	if (hooks ~= nil and type(hooks.pre_load) == 'function') then
 		hooks.pre_load()
@@ -62,7 +62,7 @@ end
 
 function module.load_from_default_dir()
 	local _, current_dir = filesystem.self_path()
-	for plugin_spec_file in filesystem.path(current_dir .. '/plugins/*.lua') do
+	for plugin_spec_file in filesystem.find_with_glob(current_dir .. '/plugins/*.lua') do
 		local _, plugin_spec = lib_module.run(plugin_spec_file)
 		local success, result = pcall(module.plug, plugin_spec)
 		if (not success) then

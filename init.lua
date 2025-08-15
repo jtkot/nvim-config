@@ -1,4 +1,6 @@
-local lib = require('lib')
+local module = require('lib.module')
+local filesystem = require('lib.filesystem')
+
 local pm = require('plugin-manager')
 vim.g.mapleader = ' '
 
@@ -7,24 +9,26 @@ if (not success) then
 	print(result)
 end
 
-local _, current_dir = lib.filesystem.self_path()
+local _, current_dir = filesystem.self_path()
 
-local _, opts = lib.module.run(current_dir .. '/config/opts.lua')
-for k, v in pairs(opts) do
-	vim.o[k] = v
+local _, opts = module.run(current_dir .. '/config/opts.lua')
+for name, value in pairs(opts) do
+	vim.o[name] = value
 end
 
-local _, cmds = lib.module.run(current_dir .. '/config/autostart.lua')
-for _, v in ipairs(cmds) do
-	vim.cmd(v)
+local _, cmds = module.run(current_dir .. '/config/autostart.lua')
+for cmd in vim.iter(cmds) do
+	vim.cmd(cmd)
 end
 
-local _, keymaps = lib.module.run(current_dir .. '/config/keymaps.lua')
-for _, v in ipairs(keymaps) do
-	vim.keymap.set(v.modes, v.keys, v.action)
+local _, keymaps = module.run(current_dir .. '/config/keymaps.lua')
+for keymap in vim.iter(keymaps) do
+	vim.keymap.set(keymap.modes, keymap.keys, keymap.action)
 end
 
-local _, commands = lib.module.run(current_dir .. '/config/commands.lua')
-for name, v in pairs(commands) do
-	vim.api.nvim_create_user_command(name, v.cmd, v.opts)
+end
+
+local _, user_commands = module.run(current_dir .. '/config/commands.lua')
+for name, definition in pairs(user_commands) do
+	vim.api.nvim_create_user_command(name, definition.cmd, definition.opts)
 end

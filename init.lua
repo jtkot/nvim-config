@@ -2,9 +2,21 @@ local module = require('lib.module')
 local filesystem = require('lib.filesystem')
 
 local pm = require('plugin-manager')
+local lm = require('language-manager')
+
 vim.g.mapleader = ' '
 
+vim.filetype.add({
+	extension = {
+		hexpat = "hexpat"
+	}
+})
+
 local success, result = pcall(pm.setup_plugin_manager)
+if (not success) then
+	print(result)
+end
+success, result = pcall(lm.setup)
 if (not success) then
 	print(result)
 end
@@ -26,6 +38,9 @@ for keymap in vim.iter(keymaps) do
 	vim.keymap.set(keymap.modes, keymap.keys, keymap.action)
 end
 
+local _, language_servers = module.run(current_dir .. '/config/language_servers.lua')
+for name, config in pairs(language_servers) do
+	lm.load_lsp(name, config)
 end
 
 local _, user_commands = module.run(current_dir .. '/config/commands.lua')

@@ -16,6 +16,7 @@ local success, result = pcall(pm.setup_plugin_manager)
 if (not success) then
 	print(result)
 end
+
 success, result = pcall(lm.setup)
 if (not success) then
 	print(result)
@@ -35,7 +36,7 @@ end
 
 local _, keymaps = module.run(current_dir .. '/config/keymaps.lua')
 for keymap in vim.iter(keymaps) do
-	vim.keymap.set(keymap.modes, keymap.keys, keymap.action)
+	vim.keymap.set(keymap.modes or 'n', keymap.keys, keymap.action, { desc = keymap.desc })
 end
 
 local _, language_servers = module.run(current_dir .. '/config/language_servers.lua')

@@ -1,6 +1,5 @@
 return {
 	autoindent = false,
-	clipboard = 'unnamed',
 	colorcolumn = '80,120',
 	cursorline = true,
 	hlsearch = false,

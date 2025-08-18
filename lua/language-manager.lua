@@ -49,7 +49,9 @@ end
 
 function _module.load_lsp(name, config)
 	vim.lsp.config(name, config)
-	vim.lsp.enable(name)
+	if vim.fn.executable(config.cmd[1]) == 1 then
+		vim.lsp.enable(name)
+	end
 end
 
 function _module.load_lsps()

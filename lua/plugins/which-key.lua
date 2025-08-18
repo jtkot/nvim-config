@@ -1,7 +1,12 @@
 return {
-	repo = 'folke/which-key.nvim',
+	'folke/which-key.nvim',
 	branch = 'main',
-	config = {
+	event = 'VeryLazy',
+	dependencies = {
+	'nvim-tree/nvim-web-devicons',
+	'echasnovski/mini.icons',
+	},
+	opts = {
 		preset = 'helix',
 		delay = 0,
 		show_help = false,

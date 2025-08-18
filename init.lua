@@ -1,67 +1,40 @@
-local module = require('lib.module')
-local filesystem = require('lib.filesystem')
-
-local pm = require('plugin-manager')
-local lm = require('language-manager')
-
-vim.g.mapleader = ' '
-
-vim.diagnostic.config(
-	{
-		underline = false,
-		virtual_lines = true,
-		update_in_insert = false,
-		severity_sort = true,
-		signs = {
-			text = {
-				[vim.diagnostic.severity.ERROR] = "●",
-				[vim.diagnostic.severity.WARN] = "●",
-				[vim.diagnostic.severity.HINT] = "●",
-				[vim.diagnostic.severity.INFO] = "●",
-			},
-		},
-	}
-)
-
 vim.filetype.add({
 	extension = {
 		hexpat = "hexpat"
 	}
 })
 
-local success, result = pcall(pm.setup_plugin_manager)
-if (not success) then
-	print(result)
-end
-
-success, result = pcall(lm.setup)
-if (not success) then
-	print(result)
-end
-
-local _, current_dir = filesystem.self_path()
-
-local _, opts = module.run(current_dir .. '/config/opts.lua')
-for name, value in pairs(opts) do
+for name, value in pairs(require'config.opts') do
 	vim.o[name] = value
 end
 
-local _, cmds = module.run(current_dir .. '/config/autostart.lua')
-for cmd in vim.iter(cmds) do
-	vim.cmd(cmd)
+for name, value in pairs(require'config.globals') do
+	vim.g[name] = value
 end
 
-local _, keymaps = module.run(current_dir .. '/config/keymaps.lua')
-for keymap in vim.iter(keymaps) do
+require'setup-lazy'
+
+for keymap in vim.iter(require'config.keymaps') do
 	vim.keymap.set(keymap.modes or 'n', keymap.keys, keymap.action, { desc = keymap.desc })
 end
 
-local _, language_servers = module.run(current_dir .. '/config/language_servers.lua')
-for name, config in pairs(language_servers) do
+local lm = require('language-manager')
+
+local success, result = pcall(lm.setup)
+if (not success) then
+	print(result)
+end
+
+for name, config in pairs(require'config.language-servers') do
 	lm.load_lsp(name, config)
 end
 
-local _, user_commands = module.run(current_dir .. '/config/commands.lua')
-for name, definition in pairs(user_commands) do
+vim.diagnostic.config(require'config.diagnostic')
+
+for name, definition in pairs(require'config.commands') do
 	vim.api.nvim_create_user_command(name, definition.cmd, definition.opts)
+end
+
+for cmd in vim.iter(require'config.autostart') do
+	vim.cmd(cmd)
 end

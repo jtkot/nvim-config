@@ -1,3 +1,2 @@
 return {
-	'colorscheme retrobox',
 }

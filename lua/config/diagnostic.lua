@@ -1,6 +1,6 @@
 return {
-		underline = false,
-		virtual_lines = true,
+		underline = true,
+		virtual_lines = false,
 		update_in_insert = false,
 		severity_sort = true,
 		signs = {

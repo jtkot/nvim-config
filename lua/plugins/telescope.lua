@@ -13,7 +13,7 @@ return {
 			}
 		}
 	},
-	config = function(opts)
+	config = function(_, opts)
 		require 'telescope'.setup(opts)
 
 		local telescope = require 'telescope.builtin'

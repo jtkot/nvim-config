@@ -8,6 +8,15 @@ return {
 		filetypes = { 'python' },
 		root_markers = { "pyrefly.toml", "pyproject.toml", ".git" }
 	},
+	["nixd"] = {
+		cmd = { 'nixd' },
+		filetypes = { 'nix' },
+		settings = {
+			formatting = {
+				command = { "nixfmt" }
+			}
+		}
+	},
 	["pylsp"] = {
 		cmd = { 'pylsp' },
 		filetypes = { 'python' },

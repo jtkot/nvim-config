@@ -12,4 +12,9 @@ return {
 			}
 		}
 	},
+	["phpactor"] = {
+		cmd = { 'phpactor', 'language-server' },
+		filetypes = { 'php' },
+		root_markers = { 'composer.json', 'vendor', '.git' }
+	},
 }

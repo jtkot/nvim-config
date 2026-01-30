@@ -16,7 +16,7 @@ function _module.update_definitions()
 	for server_name, server_config in pairs(parsed['language-server']) do
 		configs[server_name] = {
 			cmd = { server_config.command, unpack(server_config.args or {}) },
-			settings = server_config.config,
+			init_options = server_config.config,
 			filetypes = {},
 		}
 	end

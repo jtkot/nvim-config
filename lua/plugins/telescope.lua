@@ -9,7 +9,7 @@ return {
 		defaults = {
 			layout_strategy = 'vertical',
 			layout_config = {
-				vertical = { width = 0.5 }
+				vertical = { width = 0.9 }
 			}
 		}
 	},

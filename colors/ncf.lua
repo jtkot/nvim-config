@@ -1,24 +1,28 @@
-dofile(vim.api.nvim_get_runtime_file("colors/vim.lua", false)[1])
+-- dofile(vim.api.nvim_get_runtime_file("colors/vim.lua", false)[1])
+vim.cmd('hi clear')
+vim.o.statuscolumn = "%=%{v:relnum == 0 ? v:lnum : v:relnum} %s"
+
+---@param name string
+---@param val vim.api.keyset.highlight
 local hi = function(name, val)
 	val.force = true
-	val.cterm = val.cterm or {} ---@type vim.api.keyset.highlight
+	val.nocombine = true
 	vim.api.nvim_set_hl(0, name, val)
 end
 
 local ferra_night = "#2b292d"
 local ferra_ash = "#383539"
 local ferra_umber = "#4d424b"
-local ferra_bark = "#6F5D63"
-local ferra_mist = "#D1D1E0"
-local ferra_sage = "#B1B695"
+local ferra_bark = "#6f5d63"
+local ferra_mist = "#d1d1e0"
+local ferra_sage = "#b1b695"
 local ferra_blush = "#fecdb2"
 local ferra_coral = "#ffa07a"
-local ferra_rose = "#F6B6C9"
+local ferra_rose = "#f6b6c9"
 local ferra_ember = "#e06b75"
-local ferra_honey = "#F5D76E"
+local ferra_honey = "#f5d76e"
 
--- hi("@ncf.comment", { fg = "ferra_bark", modifiers = ["italic"] })
-hi("@ncf.comment", { fg = ferra_bark })
+hi("@ncf.comment", { fg = ferra_bark, italic = true })
 hi("@ncf.constant", { fg = ferra_sage })
 hi("@ncf.function", { fg = ferra_coral })
 hi("@ncf.function.macro", { fg = ferra_mist })
@@ -35,16 +39,16 @@ hi("@ncf.attribute", { fg = ferra_blush })
 hi("@ncf.namespace", { fg = ferra_blush })
 hi("@ncf.module", { fg = ferra_blush })
 
--- "markup.heading" = { fg = "ferra_sage", modifiers = ["bold"] }
--- "markup.heading.marker" = { fg = "ferra_bark" }
--- "markup.list" = { fg = "ferra_mist" }
--- "markup.bold" = { modifiers = ["bold"] }
--- "markup.italic" = { modifiers = ["italic"] }
--- "markup.strikethrough" = { modifiers = ["crossed_out"] }
--- "markup.link.url" = { fg = "ferra_rose", modifiers = ["underlined"] }
--- "markup.link.text" = { fg = "ferra_rose" }
--- "markup.quote" = { fg = "ferra_bark" }
--- "markup.raw" = { fg = "ferra_coral" }
+hi('@ncf.markup.heading', { fg = ferra_sage, bold = true })
+hi('@ncf.markup.heading.marker', { fg = ferra_bark })
+hi('@ncf.markup.list', { fg = ferra_mist })
+hi('@ncf.markup.bold', { bold = true })
+hi('@ncf.markup.italic', { italic = true })
+hi('@ncf.markup.strikethrough', { strikethrough = true })
+hi('@ncf.markup.link.text', { fg = ferra_rose })
+hi('@ncf.markup.quote', { fg = ferra_bark })
+hi('@ncf.markup.raw', { fg = ferra_coral })
+hi('@ncf.markup.link.url', { fg = ferra_rose, underline = true })
 
 hi('@ncf.ui.background', { bg = ferra_night })
 hi('@ncf.ui.cursor', { fg = ferra_night, bg = ferra_blush })
@@ -53,7 +57,7 @@ hi('@ncf.ui.cursor.select', { fg = ferra_night, bg = ferra_rose })
 hi('@ncf.ui.cursor.insert', { fg = ferra_night, bg = ferra_coral })
 hi('@ncf.ui.linenr', { fg = ferra_bark })
 hi('@ncf.ui.linenr.selected', { fg = ferra_blush })
-hi('@ncf.ui.cursorline', { fg = ferra_blush, bg = ferra_ash })
+hi('@ncf.ui.cursorline', { bg = ferra_ash }) -- NOTE was there a fg color?
 hi('@ncf.ui.statusline', { fg = ferra_blush, bg = ferra_ash })
 hi('@ncf.ui.statusline.inactive', { fg = ferra_bark, bg = ferra_ash })
 hi('@ncf.ui.statusline.normal', { fg = ferra_ash, bg = ferra_blush })
@@ -82,16 +86,17 @@ hi('@ncf.diff.minus', { fg = ferra_ember })
 -- "info" = { fg = "ferra_blush" }
 -- "hint" = { fg = "ferra_blush" }
 
--- hi("@ncf.diagnostic.warning", { gui = 'undercurl', guisp = ferra_honey })
--- hi("@ncf.diagnostic.error", { gui = 'undercurl', guisp = ferra_ember })
--- hi("@ncf.diagnostic.info", { gui = 'undercurl', guisp = ferra_blush })
--- hi("@ncf.diagnostic.hint", { gui = 'undercurl', guisp = ferra_blush })
+hi("@ncf.diagnostic.warning", { undercurl = true, sp = ferra_honey })
+hi("@ncf.diagnostic.error", { undercurl = true, sp = ferra_ember })
+hi("@ncf.diagnostic.info", { undercurl = true, sp = ferra_blush })
+hi("@ncf.diagnostic.hint", { undercurl = true, sp = ferra_blush })
 -- hi("@ncf.diagnostic.unnecessary", { modifiers = { "dim" } })
--- hi("@ncf.diagnostic.deprecated", { modifiers = { "crossed_out" } })
+hi("@ncf.diagnostic.deprecated", { strikethrough = true })
 
--- """"""""""""""""
--- " Vim builtins
--- """"""""""""""""
+
+------------------
+-- Vim Builtins --
+------------------
 
 hi("CursorLineNr", { link = 'CursorLine' })
 hi("PmenuMatch", { link = 'Pmenu' })
@@ -99,12 +104,12 @@ hi("PmenuMatchSel", { link = 'PmenuSel' })
 hi("PmenuSel", { link = '@ncf.ui.menu.selected' })
 hi("TabLineSel", { link = 'PmenuSel' })
 
--- "" UI
+--- UI
 hi("ColorColumn", { link = '@ncf.ui.virtual.ruler' })
 -- hi ( "ComplMatchIns", {} )
 -- hi ( "Conceal", {} )
--- hi ( "CurSearch", {} )
--- hi ( "CursorColumn", {} )
+hi("CurSearch", { link = 'Search' })
+hi("CursorColumn", { link = 'CursorLine' })
 hi("CursorLine", { link = '@ncf.ui.cursorline' })
 hi("CursorLineFold", { link = 'CursorLine' })
 hi("CursorLineSign", { link = 'CursorLine' })
@@ -117,14 +122,14 @@ hi("DiffDelete", { link = '@ncf.diff.minus' })
 -- hi ( "ErrorMsg", {} )
 hi("FoldColumn", { link = 'LineNr' })
 -- hi ( "Folded", {} )
--- hi ( "IncSearch", {} )
+hi("IncSearch", { link = 'Search' })
 hi("LineNr", { link = '@ncf.ui.linenr.selected' })
 hi("LineNrAbove", { link = '@ncf.ui.linenr' })
 hi("LineNrBelow", { link = 'LineNrAbove' })
--- hi ( "ModeMsg", {} )
+hi("ModeMsg", { link = '@ncf.ui.statusline.insert' })
 -- hi ( "MoreMsg", {} )
 -- hi ( "MsgArea", {} )
--- hi ( "NonText", {} )
+hi("NonText", { link = '@ncf.ui.virtual' })
 hi("Pmenu", { link = '@ncf.ui.menu' })
 hi("PmenuExtra", { link = 'Pmenu' })
 hi("PmenuExtraSel", { link = 'PmenuSel' })
@@ -134,7 +139,7 @@ hi("PmenuSbar", { link = 'Pmenu' })
 hi("PmenuThumb", { link = 'Pmenu' })
 -- hi ( "Question", {} )
 -- hi ( "QuickFixLine", {} )
--- hi ( "Search", {} )
+hi("Search", { link = 'Visual' })
 hi("SignColumn", { link = 'LineNr' })
 -- hi ( "SpecialKey", {} )
 -- hi ( "SpellBad", {} )
@@ -147,7 +152,7 @@ hi("StatusLineTerm", { link = 'StatusLine' })
 hi("StatusLineTermNC", { link = 'StatusLine' })
 -- hi ( "TabLine", {} )
 -- hi ( "TabLineFill", {} )
--- hi ( "Title", {} )
+hi("Title", { link = 'Normal' })
 -- hi ( "VertSplit", {} )
 hi("Visual", { link = '@ncf.ui.selection' })
 hi("VisualNOS", { link = 'Visual' })
@@ -155,12 +160,14 @@ hi("VisualNOS", { link = 'Visual' })
 hi("WildMenu", { link = 'Pmenu' })
 
 
--- """""""""""""
--- " Vim inits
--- """""""""""""
+---------------
+-- Vim Inits --
+---------------
 
 hi("Cursor", { link = '@ncf.ui.cursor' })
-hi("Normal", { link = '@ncf.ui.background' })
+-- Normal is probably a special case and won't work properly if linked
+hi("Normal", { bg = ferra_night })
+-- hi("Normal", { link = '@ncf.ui.background' })
 -- hi ( "MessageWindow", {} )
 -- hi ( "PopupNotification", {} )
 hi("PopupSelected", { link = 'PmenuSel' })
@@ -168,18 +175,18 @@ hi("PopupSelected", { link = 'PmenuSel' })
 -- hi ( "ToolbarLine", {} )
 hi("lCursor", { link = 'Cursor' })
 
--- "" UI
--- hi ( "MatchParen", {} )
+--- UI
+hi("MatchParen", { link = '@ncf.ui.cursor.match' })
 
 
--- """"""""""""""""""""""""""""
--- " Neovim specific builtins
--- """"""""""""""""""""""""""""
+---------------------
+-- Neovim Builtins --
+---------------------
 
 hi("TermCursor", { link = 'Cursor' })
 hi("VisualNC", { link = 'Visual' })
 
--- "" UI
+--- UI
 -- hi ( "FloatBorder", {} )
 -- hi ( "FloatFooter", {} )
 -- hi ( "FloatTitle", {} )
@@ -192,14 +199,18 @@ hi("Whitespace", { link = "@ncf.ui.virtual.whitespace" })
 -- hi ( "WinSeparator", {} )
 
 
--- """""""""""""""""""""""""
--- " Neovim specific inits
--- """""""""""""""""""""""""
+------------------
+-- Neovim Inits --
+-------------------
 
--- hi ( "Underlined", {} )
+hi("Underlined", { underline = true })
 -- hi ( "RedrawDebugNormal", {} )
 
--- "" treesitter
+
+----------------
+-- Treesitter --
+----------------
+
 -- hi ( "@attribute", {} )
 -- hi ( "@attribute.builtin", {} )
 hi("@boolean", { link = 'Boolean' })
@@ -223,11 +234,11 @@ hi("@function", { link = 'Function' })
 hi("@keyword", { link = 'Keyword' })
 hi("@label", { link = 'Label' })
 -- hi ( "@markup", {} )
--- hi ( "@markup.heading", {} )
--- hi ( "@markup.italic", {} )
--- hi ( "@markup.link", {} )
--- hi ( "@markup.strikethrough", {} )
--- hi ( "@markup.strong", {} )
+hi("@markup.heading", { link = '@ncf.markup.heading' })
+hi("@markup.italic", { link = '@ncf.markup.italic' })
+hi("@markup.link", { link = '@ncf.markup.link.text' })
+hi("@markup.strikethrough", { link = '@ncf.markup.strikethrough' })
+hi("@markup.strong", { link = '@ncf.markup.bold' })
 -- hi ( "@markup.underline", {} )
 -- hi ( "@module", {} )
 -- hi ( "@module.builtin", {} )
@@ -241,7 +252,7 @@ hi("@string", { link = 'String' })
 -- hi ( "@string.escape", {} )
 -- hi ( "@string.regexp", {} )
 -- hi ( "@string.special", {} )
--- hi ( "@string.special.url", {} )
+hi("@string.special.url", { link = '@ncf.markup.link.url' })
 hi("@tag", { link = 'Tag' })
 -- hi ( "@tag.builtin", {} )
 hi("@type", { link = 'Type' })
@@ -253,7 +264,11 @@ hi("@variable.builtin", { link = '@variable' })
 hi("@variable.parameter", { link = '@variable' })
 hi("@variable.parameter.builtin", { link = '@variable' })
 
--- "" ( "LSP" syntax highlighting )
+
+-----------------------------
+-- LSP Syntax Highlighting --
+-----------------------------
+
 -- hi ( "@lsp.mod.deprecated", {} )
 -- hi ( "@lsp.type.class", {} )
 -- hi ( "@lsp.type.comment", {} )
@@ -279,11 +294,11 @@ hi("@variable.parameter.builtin", { link = '@variable' })
 -- hi ( "@lsp.type.typeParameter", {} )
 -- hi ( "@lsp.type.variable", {} )
 
--- "" :help
+--- Help
 -- hi ( "@markup.heading.1.delimiter.vimdoc", {} )
 -- hi ( "@markup.heading.2.delimiter.vimdoc", {} )
 
--- "" UI
+--- UI
 -- hi ( "Added", {} )
 -- hi ( "Changed", {} )
 -- hi ( "CursorIM", {} )
@@ -295,9 +310,9 @@ hi("@variable.parameter.builtin", { link = '@variable' })
 -- hi ( "Removed", {} )
 -- hi ( "Substitute", {} )
 
--- "" Syntax
--- hi("Boolean", {})
--- hi("Character", {})
+--- Syntax
+hi("Boolean", { link = 'Constant' })
+hi("Character", { link = 'Constant' })
 hi("Comment", { link = '@ncf.comment' })
 -- hi("Conditional", {})
 hi("Constant", { link = '@ncf.constant' })
@@ -306,7 +321,7 @@ hi("Constant", { link = '@ncf.constant' })
 -- hi("Delimiter", {})
 -- hi("Error", {})
 -- hi("Exception", {})
--- hi("Float", {})
+hi("Float", { link = 'Number' })
 hi("Function", { link = '@ncf.function' })
 hi("Identifier", { link = '@ncf.variable' })
 -- hi("Ignore", {})
@@ -314,7 +329,7 @@ hi("Identifier", { link = '@ncf.variable' })
 hi("Keyword", { link = '@ncf.keyword' })
 hi("Label", { link = '@ncf.label' })
 -- hi("Macro", {})
--- hi("Number", {})
+hi("Number", { link = 'Constant' })
 hi("Operator", { link = '@ncf.operator' })
 -- hi("PreCondit", {})
 -- hi("PreProc", {})
@@ -322,7 +337,7 @@ hi("Operator", { link = '@ncf.operator' })
 -- hi("Special", {})
 -- hi("SpecialChar", {})
 -- hi("SpecialComment", {})
--- hi("Statement", {})
+hi("Statement", { link = '@ncf.keyword' })
 -- hi("StorageClass", {})
 hi("String", { link = '@ncf.string' })
 -- hi("Structure", {})
@@ -331,7 +346,7 @@ hi("Tag", { link = '@ncf.tag' })
 hi("Type", { link = '@ncf.type' })
 -- hi("Typedef", {})
 
--- "" Diagnostic
+--- Diagnostic
 -- hi ( "DiagnosticDeprecated", { link = '@ncf.diagnostic.warning' } )
 -- hi ( "DiagnosticError", { link = '@ncf.diagnostic.error' } )
 -- hi ( "DiagnosticFloatingError", {} )
@@ -347,11 +362,11 @@ hi("Type", { link = '@ncf.type' })
 -- hi ( "DiagnosticSignInfo", {} )
 -- hi ( "DiagnosticSignOk", {} )
 -- hi ( "DiagnosticSignWarn", {} )
--- hi ( "DiagnosticUnderlineError", {} )
--- hi ( "DiagnosticUnderlineHint", {} )
--- hi ( "DiagnosticUnderlineInfo", {} )
--- hi ( "DiagnosticUnderlineOk", {} )
--- hi ( "DiagnosticUnderlineWarn", {} )
+hi("DiagnosticUnderlineError", { link = '@ncf.diagnostic.error' })
+hi("DiagnosticUnderlineHint", { link = '@ncf.diagnostic.hint' })
+hi("DiagnosticUnderlineInfo", { link = '@ncf.diagnostic.info' })
+-- hi ( "DiagnosticUnderlineOk", { link = '@ncf.diagnostic.error' } )
+hi("DiagnosticUnderlineWarn", { link = '@ncf.diagnostic.warning' })
 -- hi ( "DiagnosticUnnecessary", { link = '@ncf.diagnostic.unnecessary' } )
 -- hi ( "DiagnosticVirtualLinesError", {} )
 -- hi ( "DiagnosticVirtualLinesHint", {} )
@@ -365,7 +380,7 @@ hi("Type", { link = '@ncf.type' })
 -- hi ( "DiagnosticVirtualTextWarn", {} )
 -- hi ( "DiagnosticWarn", { link = '@ncf.diagnostic.warning' } )
 
--- "" Built-in LSP
+--- Built-in LSP
 -- hi ( "LspCodeLens", {} )
 -- hi ( "LspCodeLensSeparator", {} )
 -- hi ( "LspInlayHint", {} )
@@ -376,7 +391,7 @@ hi("Type", { link = '@ncf.type' })
 -- hi ( "LspSignatureActiveParameter", {} )
 -- hi ( "SnippetTabstop", {} )
 
--- "" Neovim parser
+--- Neovim parser
 -- hi ( "NvimAnd", {} )
 -- hi ( "NvimArrow", {} )
 -- hi ( "NvimAssignment", {} )

@@ -1,5 +1,6 @@
 return {
 	'nvim-treesitter/nvim-treesitter',
+	branch = "main",
 	lazy = false,
 	build = ':TSUpdate',
 	opts = {
@@ -19,7 +20,7 @@ return {
 		}
 	},
 	config = function(_, opts)
-		local parsers = require'nvim-treesitter.parsers'.get_parser_configs()
+		local parsers = require'nvim-treesitter.parsers'
 		parsers.hexpat = {
 			install_info = {
 				url = 'https://github.com/jtkot/tree-sitter-hexpat.git',
@@ -29,6 +30,6 @@ return {
 				requires_generate_from_grammar = true,
 			}
 		}
-		require'nvim-treesitter.configs'.setup(opts)
+		require'nvim-treesitter'.setup(opts)
 	end
 }

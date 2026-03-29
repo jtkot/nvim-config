@@ -7,7 +7,7 @@ _module.install_path = vim.fs.joinpath(vim.fn.stdpath('data'), 'lsps.lua')
 
 function _module.update_definitions()
 	local languages_url =
-	'https://raw.githubusercontent.com/helix-editor/helix/050e1d9b4797c9ec858bb977cb550f2506a4204b/languages.toml'
+	'https://raw.githubusercontent.com/helix-editor/helix/refs/heads/master/languages.toml'
 	local languages_toml = curl.fetch(languages_url)
 	local parsed = yq.parse_toml(languages_toml)
 
@@ -30,12 +30,15 @@ function _module.update_definitions()
 				if type(ft) == 'string' then
 					LanguageName, _ = vim.filetype.match({ filename = 'test.' .. ft })
 					if LanguageName then
-						table.insert(configs[server_name].filetypes, language.name)
+						table.insert(configs[server_name].filetypes, LanguageName)
 						break
 					end
 				end
 			end
 			if language.roots then
+				if not configs[server_name] then
+					break
+				end
 				configs[server_name].root_markers = { unpack(language.roots), unpack(configs[server_name].root_markers or
 					{}) }
 			end
